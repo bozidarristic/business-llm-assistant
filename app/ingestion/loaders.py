@@ -1,4 +1,5 @@
 from pathlib import Path
+import hashlib
 import pandas as pd
 
 from app.data.schema import BusinessDocument
@@ -136,10 +137,83 @@ def load_internal_docs(path: Path) -> list[BusinessDocument]:
     return docs
 
 
-def load_all_documents(raw_data_dir: Path) -> list[BusinessDocument]:
+def load_text_document(path: Path) -> list[BusinessDocument]:
+    text = path.read_text(encoding="utf-8")
+    if not text.strip():
+        return []
+
+    return [
+        BusinessDocument(
+            id=f"uploaded-text-{_stable_file_id(path)}",
+            source=path.name,
+            content=text.strip(),
+            metadata={
+                "type": "uploaded_document",
+                "file_name": path.name,
+            },
+        )
+    ]
+
+
+def load_generic_csv(path: Path) -> list[BusinessDocument]:
+    df = pd.read_csv(path)
+    docs = []
+
+    for idx, row in df.iterrows():
+        row_text = "\n".join(
+            f"{column}: {row[column]}"
+            for column in df.columns
+            if pd.notna(row[column])
+        )
+        docs.append(
+            BusinessDocument(
+                id=f"uploaded-csv-{_stable_file_id(path)}-{idx}",
+                source=path.name,
+                content=f"Uploaded CSV row from {path.name}:\n{row_text}",
+                metadata={
+                    "type": "uploaded_csv_row",
+                    "file_name": path.name,
+                    "row_index": int(idx),
+                },
+            )
+        )
+
+    return docs
+
+
+def load_uploaded_documents(upload_dir: Path) -> list[BusinessDocument]:
+    if not upload_dir.exists():
+        return []
+
+    documents: list[BusinessDocument] = []
+    for path in sorted(upload_dir.iterdir()):
+        if not path.is_file() or path.name == ".gitkeep":
+            continue
+
+        suffix = path.suffix.lower()
+        if suffix == ".csv":
+            documents.extend(load_generic_csv(path))
+        elif suffix in {".md", ".txt"}:
+            documents.extend(load_text_document(path))
+
+    return documents
+
+
+def _stable_file_id(path: Path) -> str:
+    digest = hashlib.sha1(path.read_bytes()).hexdigest()[:12]
+    safe_stem = "".join(char if char.isalnum() else "-" for char in path.stem.lower())
+    return f"{safe_stem}-{digest}"
+
+
+def load_all_documents(
+    raw_data_dir: Path,
+    upload_dir: Path | None = None,
+) -> list[BusinessDocument]:
     documents: list[BusinessDocument] = []
     documents.extend(load_customers(raw_data_dir / "customers.csv"))
     documents.extend(load_leads(raw_data_dir / "leads.csv"))
     documents.extend(load_support_tickets(raw_data_dir / "support_tickets.csv"))
     documents.extend(load_internal_docs(raw_data_dir / "internal_docs.md"))
+    if upload_dir is not None:
+        documents.extend(load_uploaded_documents(upload_dir))
     return documents

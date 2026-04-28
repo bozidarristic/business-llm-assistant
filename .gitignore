@@ -3,6 +3,8 @@ __pycache__/
 *.pyc
 .env
 data/chroma/
+data/uploads/*
+!data/uploads/.gitkeep
 .DS_Store
 .idea/
 .vscode/

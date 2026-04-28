@@ -113,6 +113,19 @@ python -m app.scripts.ask "Which leads should sales prioritize?"
 python -m app.scripts.ask "Draft a professional reply to Beta Manufacturing about the SLA issue."
 ```
 
+## Run the UI
+
+```bash
+streamlit run app/ui/streamlit_app.py
+```
+
+The UI supports:
+
+- uploading CSV, Markdown, and text files
+- rebuilding the local vector index
+- asking questions through a simple chat-style form
+- viewing the available files and indexed sources
+
 ## Design Notes
 
 The assistant is designed as a modular local RAG system. Business records are converted into normalized text documents with metadata, chunked, embedded locally, and stored in Chroma. At query time, the system retrieves relevant context and passes it to a local model with a strict grounded prompt.
