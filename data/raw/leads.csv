@@ -1,0 +1,5 @@
+lead_id,company_name,industry,lead_source,estimated_value_eur,stage,priority,next_action,notes
+LEAD-001,Orion Bank,Financial Services,Inbound demo request,75000,Discovery,High,"Schedule technical workshop","Interested in AI assistant for internal knowledge base and compliance Q&A."
+LEAD-002,Luna Fashion,Fashion,Retail event,30000,Qualified,Medium,"Send case study","Wants automated customer support summaries and campaign analytics."
+LEAD-003,MedicaPlus,Healthcare,Referral,65000,Proposal,High,"Finalize security questionnaire","Strong interest but strict privacy requirements. Local deployment is a major advantage."
+LEAD-004,CityMove,Mobility,Website form,18000,New,Low,"Initial qualification call","Early-stage request. Needs clarification on budget and timeline."

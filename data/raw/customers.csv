@@ -1,0 +1,5 @@
+customer_id,company_name,industry,plan,status,account_owner,renewal_date,arr_eur,health_score,notes
+CUST-001,Acme Retail,Retail,Enterprise,Active,Laura Bianchi,2026-07-15,48000,68,"Uses the platform for customer segmentation and automated campaign reporting. Recent concerns about dashboard latency."
+CUST-002,Beta Manufacturing,Manufacturing,Professional,At Risk,Marco Conti,2026-05-30,22000,42,"Customer is unhappy about delayed SLA response on integration issues. Renewal risk is high unless support follow-up improves."
+CUST-003,GreenFarm Foods,Food & Beverage,Enterprise,Active,Sofia Romano,2026-09-10,56000,81,"Strong adoption across marketing and operations teams. Interested in predictive demand forecasting."
+CUST-004,Northwind Logistics,Logistics,Starter,Active,Andrea Riva,2026-11-01,9000,74,"Small account but usage is growing. Potential upsell if shipment anomaly detection demo performs well."
